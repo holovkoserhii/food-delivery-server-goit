@@ -1,10 +1,20 @@
-const qs = require("querystring");
+// const qs = require("querystring");
+const path = require("path");
+const fs = require("fs");
 
 const saveUser = user => {
   // получить файл с юзером
   // найти путь папки users
   // сохранить туда файл
-  console.log("current folder: ", __dirname);
+  // console.log("current folder: ", __dirname);
+  const file = path.join(
+    __dirname,
+    "../../db/users/" + user.username + ".json"
+  );
+  fs.writeFile(file, JSON.stringify(user), error => {
+    if (error) throw error;
+    console.log("written sucessfully");
+  });
 };
 
 const signUpRoute = (request, response) => {
@@ -16,22 +26,17 @@ const signUpRoute = (request, response) => {
     });
 
     request.on("end", function() {
-      const post = qs.parse(body);
+      const parsedBody = JSON.parse(body);
+      saveUser(parsedBody);
 
-      // To address to each
-      // console.log(Object.keys(post)[0]);
-      saveUser(post);
+      const resp = JSON.stringify({
+        status: "success",
+        user: parsedBody
+      });
+      response.writeHead(201, { "Content-Type": "application/json" });
+      response.end(resp);
     });
   }
-
-  // Взять username с данных, сохранить в переменную
-
-  // Сохраняем данные в <username>.json
-
-  // Сохранить <username>.json в папку users
-
-  // Отправляем файл в ответе с данными юзера
-  // использовать response
 };
 
 module.exports = signUpRoute;
