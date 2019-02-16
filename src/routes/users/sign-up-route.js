@@ -3,10 +3,6 @@ const path = require("path");
 const fs = require("fs");
 
 const saveUser = user => {
-  // получить файл с юзером
-  // найти путь папки users
-  // сохранить туда файл
-  // console.log("current folder: ", __dirname);
   const file = path.join(
     __dirname,
     "../../db/users/" + user.username + ".json"
