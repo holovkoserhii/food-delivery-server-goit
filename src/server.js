@@ -1,4 +1,4 @@
-// const https = require("https");
+const https = require("https");
 const http = require("http");
 const morgan = require("morgan");
 const router = require("./routes/router");
@@ -7,14 +7,14 @@ const path = require("path");
 const url = require("url");
 const fs = require("fs");
 
-// const options = {
-//   cert: fs.readFileSync("./46972791_localhost_3001_.cert"),
-//   key: fs.readFileSync("./46972791_localhost_3001_.key")
-// };
+const options = {
+  cert: fs.readFileSync("./certs/server/server.crt"),
+  key: fs.readFileSync("./certs/server/server.key")
+};
 
 const startServer = port => {
-  // const server = https.createServer(options, (request, response) => {
-  const server = http.createServer((request, response) => {
+  const server = https.createServer(options, (request, response) => {
+    // const server = http.createServer((request, response) => {
     //deleting last "/" if in the end of a string
     const reqUrl =
       request.url[request.url.length - 1] === "/"
